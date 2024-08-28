@@ -1,1 +1,108 @@
-Hello World
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LOTZBTC</title>
+    <style>
+        body {
+            background-color: #20398d; /* Commodore 64 blue background */
+            color: #6076c5; /* Commodore 64 white text */
+            font-family: "C64 Pro Mono", "Lucida Console", Monaco, monospace; /* C64 font fallback */
+            font-size: 1.0rem; /* Slightly larger text */
+            line-height: 1.2; /* Adjust line height */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        @font-face {
+            font-family: "C64 Pro Mono";
+            src: url("fonts/C64_Pro_Mono-STYLE.ttf") format("truetype");
+        }
+
+        .header {
+            padding: 20px;
+        }
+
+        .screen {
+            flex: 1;
+            padding: 20px;
+            box-sizing: border-box;
+            max-width: 640px;
+        }
+
+        .command {
+            margin: 10px 0;
+        }
+
+        .blinking-cursor {
+    display: none; /* Initially hidden */
+    width: 10px;
+    height: 1.2em; /* Adjust height to match font size */
+    background-color: #6076c5;
+    animation: blink 1s steps(2, start) infinite;
+}
+
+
+        @keyframes blink {
+            0% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <p>**** COMMODORE 64 BASIC V2 ****</p>
+        <p>64K RAM SYSTEM  38911 BASIC BYTES FREE</p>
+        <p>READY.</p>
+    </div>
+    <div class="screen" id="screen">
+        <div class="command" id="output"></div>
+        <div class="command">
+            <span class="blinking-cursor" id="cursor"></span>
+        </div>
+    </div>
+
+    <script>
+        const output = document.getElementById('output');
+        const cursor = document.getElementById('cursor');
+        const lines = [
+            'PRESS PLAY ON TAPE',
+            'LOADING LOTZBTC . . . .',
+            'READY',
+            'RUN'
+        ];
+        let lineIndex = 0;
+        let charIndex = 0;
+
+        function typeLine() {
+            if (charIndex < lines[lineIndex].length) {
+                output.innerHTML += lines[lineIndex][charIndex];
+                charIndex++;
+                setTimeout(typeLine, 100);
+            } else {
+                charIndex = 0;
+                lineIndex++;
+                if (lineIndex < lines.length) {
+                    output.innerHTML += '<br>'; // Add a line break after each line
+                    setTimeout(typeLine, 1000);
+                } else {
+                    // Show cursor after all lines are typed
+                    cursor.style.display = 'inline-block';
+                }
+            }
+        }
+
+        // Start typing the lines after a brief delay
+        setTimeout(typeLine, 1000);
+    </script>
+</body>
+</html>
